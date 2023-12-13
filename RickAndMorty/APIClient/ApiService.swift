@@ -7,5 +7,5 @@ final class ApiService {
 
     private init() {}
 
-    public func execute(_ request: ApiRequest, completion: @escaping () -> void) {}
+    public func execute(_ request: ApiRequest, completion: @escaping () -> Void) {}
 }
