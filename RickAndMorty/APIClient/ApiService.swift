@@ -7,5 +7,7 @@ final class ApiService {
 
     private init() {}
 
-    public func execute(_ request: ApiRequest, completion: @escaping () -> Void) {}
+    public func execute<T: Codable>(_ request: ApiRequest, expecting type: T.Type) async throws -> T {
+        
+    }
 }

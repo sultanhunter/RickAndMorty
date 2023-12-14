@@ -13,5 +13,18 @@ final class CharacterViewController: UIViewController {
 
         view.backgroundColor = .systemBackground
         title = "Characters"
+        Task {
+            await fireApiCall()
+        }
+    }
+
+    private func fireApiCall() async {
+        let request = ApiRequest(endpoint: .character, pathComponents: ["1"], queryParameters: [
+            URLQueryItem(name: "name", value: "rick"),
+            URLQueryItem(name: "status", value: "alive")
+        ])
+        do {
+            let character = try await ApiService.shared.execute(request, expecting: RMCharacter.self)
+        } catch {}
     }
 }
