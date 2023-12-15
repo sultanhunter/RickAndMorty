@@ -1,30 +1,32 @@
-//
-//  RMCharacterViewController.swift
-//  RickAndMorty
-//
-//  Created by Sultan on 13/12/23.
-//
-
 import UIKit
 
-final class CharacterViewController: UIViewController {
+final class CharacterViewController: UIViewController, CharacterListViewDelegate {
+    private let characterListView = CharacterListView()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = .systemBackground
         title = "Characters"
-        Task {
-            await fireApiCall()
-        }
+        setUpView()
     }
 
-    private func fireApiCall() async {
-        let request = ApiRequest(endpoint: .character, pathComponents: ["1"], queryParameters: [
-            URLQueryItem(name: "name", value: "rick"),
-            URLQueryItem(name: "status", value: "alive")
+    private func setUpView() {
+        characterListView.delegate = self
+        view.addSubview(characterListView)
+        NSLayoutConstraint.activate([
+            characterListView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            characterListView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
+            characterListView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            characterListView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor)
+
         ])
-        do {
-            let character = try await ApiService.shared.execute(request, expecting: RMCharacter.self)
-        } catch {}
+    }
+
+    func characterSelected(_ characterListView: CharacterListView, selectedCharacter character: RMCharacter) {
+        let viewModel = CharacterDetailViewVM(character: character)
+        let detailVC = CharacterDetailViewController(viewModel: viewModel)
+        detailVC.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(detailVC, animated: true)
     }
 }

@@ -7,7 +7,7 @@ final class ApiRequest {
     }
 
     private let endpoint: ApiEndpoint
-    private let pathComponents: Set<String>
+    private let pathComponents: [String]
     private let queryParameters: [URLQueryItem]
 
     private var urlString: String {
@@ -36,9 +36,49 @@ final class ApiRequest {
         return URL(string: urlString)
     }
 
-    public init(endpoint: ApiEndpoint, pathComponents: Set<String>? = nil, queryParameters: [URLQueryItem]? = nil) {
+    convenience init?(url: URL) {
+        let string = url.absoluteString
+        if !string.contains(Constants.baseUrl) {
+            return nil
+        }
+
+        let trimmed = string.replacingOccurrences(of: Constants.baseUrl + "/", with: "")
+        if trimmed.contains("/") {
+            let components = trimmed.components(separatedBy: "/")
+            if !components.isEmpty {
+                let endPointString = components[0]
+                if let rmEndPoint = ApiEndpoint(rawValue: endPointString) {
+                    self.init(endpoint: rmEndPoint)
+                    return
+                }
+            }
+        } else if trimmed.contains("?") {
+            let components = trimmed.components(separatedBy: "?")
+            if !components.isEmpty, components.count >= 2 {
+                let endPointString = components[0]
+                let queryItemsString = components[1]
+
+                let queryItems: [URLQueryItem] = queryItemsString.components(separatedBy: "&").compactMap {
+                    guard $0.contains("=") else { return nil }
+                    let parts = $0.components(separatedBy: "=")
+                    return URLQueryItem(name: parts[0], value: parts[1])
+                }
+                if let rmEndPoint = ApiEndpoint(rawValue: endPointString) {
+                    self.init(endpoint: rmEndPoint, queryParameters: queryItems)
+                    return
+                }
+            }
+        }
+        return nil
+    }
+
+    public init(endpoint: ApiEndpoint, pathComponents: [String]? = nil, queryParameters: [URLQueryItem]? = nil) {
         self.endpoint = endpoint
         self.pathComponents = pathComponents ?? []
         self.queryParameters = queryParameters ?? []
     }
+}
+
+extension ApiRequest {
+    static let listCharactersRequest = ApiRequest(endpoint: .character)
 }

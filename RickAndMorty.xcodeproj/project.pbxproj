@@ -22,6 +22,17 @@
 		84F539B42B2A391E00CB4CD7 /* ApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F539B32B2A391E00CB4CD7 /* ApiService.swift */; };
 		84F539B62B2A3A0000CB4CD7 /* ApiRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F539B52B2A3A0000CB4CD7 /* ApiRequest.swift */; };
 		84F539B82B2A3FD900CB4CD7 /* ApiEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F539B72B2A3FD900CB4CD7 /* ApiEndpoint.swift */; };
+		84F539BC2B2B35C800CB4CD7 /* RMAllCharactersResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F539BB2B2B35C800CB4CD7 /* RMAllCharactersResponse.swift */; };
+		84F539BE2B2B39E600CB4CD7 /* CharacterListViewVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F539BD2B2B39E600CB4CD7 /* CharacterListViewVM.swift */; };
+		84F539C02B2B3A4F00CB4CD7 /* CharacterListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F539BF2B2B3A4F00CB4CD7 /* CharacterListView.swift */; };
+		84F539C22B2B43B800CB4CD7 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F539C12B2B43B800CB4CD7 /* Extensions.swift */; };
+		84F539C42B2B594D00CB4CD7 /* CharacterCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F539C32B2B594D00CB4CD7 /* CharacterCollectionViewCell.swift */; };
+		84F539C62B2B5B2A00CB4CD7 /* CharacterCollectionViewCellVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F539C52B2B5B2A00CB4CD7 /* CharacterCollectionViewCellVM.swift */; };
+		84F539C92B2C765C00CB4CD7 /* CharacterDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F539C82B2C765C00CB4CD7 /* CharacterDetailViewController.swift */; };
+		84F539CB2B2C779F00CB4CD7 /* CharacterDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F539CA2B2C779F00CB4CD7 /* CharacterDetailView.swift */; };
+		84F539CD2B2C77C000CB4CD7 /* CharacterDetailViewVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F539CC2B2C77C000CB4CD7 /* CharacterDetailViewVM.swift */; };
+		84F539CF2B2C84C100CB4CD7 /* FooterLoadingCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F539CE2B2C84C100CB4CD7 /* FooterLoadingCollectionReusableView.swift */; };
+		84F539D12B2CE32600CB4CD7 /* RMImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F539D02B2CE32600CB4CD7 /* RMImageManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +53,17 @@
 		84F539B32B2A391E00CB4CD7 /* ApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiService.swift; sourceTree = "<group>"; };
 		84F539B52B2A3A0000CB4CD7 /* ApiRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiRequest.swift; sourceTree = "<group>"; };
 		84F539B72B2A3FD900CB4CD7 /* ApiEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiEndpoint.swift; sourceTree = "<group>"; };
+		84F539BB2B2B35C800CB4CD7 /* RMAllCharactersResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMAllCharactersResponse.swift; sourceTree = "<group>"; };
+		84F539BD2B2B39E600CB4CD7 /* CharacterListViewVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterListViewVM.swift; sourceTree = "<group>"; };
+		84F539BF2B2B3A4F00CB4CD7 /* CharacterListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterListView.swift; sourceTree = "<group>"; };
+		84F539C12B2B43B800CB4CD7 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		84F539C32B2B594D00CB4CD7 /* CharacterCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterCollectionViewCell.swift; sourceTree = "<group>"; };
+		84F539C52B2B5B2A00CB4CD7 /* CharacterCollectionViewCellVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterCollectionViewCellVM.swift; sourceTree = "<group>"; };
+		84F539C82B2C765C00CB4CD7 /* CharacterDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterDetailViewController.swift; sourceTree = "<group>"; };
+		84F539CA2B2C779F00CB4CD7 /* CharacterDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterDetailView.swift; sourceTree = "<group>"; };
+		84F539CC2B2C77C000CB4CD7 /* CharacterDetailViewVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterDetailViewVM.swift; sourceTree = "<group>"; };
+		84F539CE2B2C84C100CB4CD7 /* FooterLoadingCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterLoadingCollectionReusableView.swift; sourceTree = "<group>"; };
+		84F539D02B2CE32600CB4CD7 /* RMImageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMImageManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +111,7 @@
 		84F22B4A2B2A0421007E0A8A /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				84F539C72B2C762200CB4CD7 /* Other */,
 				84F22B572B2A05E7007E0A8A /* Core */,
 			);
 			path = Controllers;
@@ -97,9 +120,8 @@
 		84F22B4B2B2A0431007E0A8A /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				84F22B512B2A0512007E0A8A /* RMLocation.swift */,
-				84F22B532B2A0524007E0A8A /* RMCharacter.swift */,
-				84F22B552B2A0531007E0A8A /* RMEpisode.swift */,
+				84F539BA2B2B356B00CB4CD7 /* APIResponseTypes */,
+				84F539B92B2B355A00CB4CD7 /* DataTypes */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -107,6 +129,10 @@
 		84F22B4C2B2A043C007E0A8A /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				84F539BF2B2B3A4F00CB4CD7 /* CharacterListView.swift */,
+				84F539C32B2B594D00CB4CD7 /* CharacterCollectionViewCell.swift */,
+				84F539CA2B2C779F00CB4CD7 /* CharacterDetailView.swift */,
+				84F539CE2B2C84C100CB4CD7 /* FooterLoadingCollectionReusableView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -114,6 +140,9 @@
 		84F22B4D2B2A044B007E0A8A /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				84F539BD2B2B39E600CB4CD7 /* CharacterListViewVM.swift */,
+				84F539C52B2B5B2A00CB4CD7 /* CharacterCollectionViewCellVM.swift */,
+				84F539CC2B2C77C000CB4CD7 /* CharacterDetailViewVM.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -121,6 +150,7 @@
 		84F22B4E2B2A045A007E0A8A /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				84F539D02B2CE32600CB4CD7 /* RMImageManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -142,6 +172,7 @@
 				84F22B412B29EFBB007E0A8A /* LaunchScreen.storyboard */,
 				84F22B362B29EFB9007E0A8A /* AppDelegate.swift */,
 				84F22B382B29EFB9007E0A8A /* SceneDelegate.swift */,
+				84F539C12B2B43B800CB4CD7 /* Extensions.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -156,6 +187,32 @@
 				84F22B5E2B2A06F7007E0A8A /* SettingsViewController.swift */,
 			);
 			path = Core;
+			sourceTree = "<group>";
+		};
+		84F539B92B2B355A00CB4CD7 /* DataTypes */ = {
+			isa = PBXGroup;
+			children = (
+				84F22B512B2A0512007E0A8A /* RMLocation.swift */,
+				84F22B532B2A0524007E0A8A /* RMCharacter.swift */,
+				84F22B552B2A0531007E0A8A /* RMEpisode.swift */,
+			);
+			path = DataTypes;
+			sourceTree = "<group>";
+		};
+		84F539BA2B2B356B00CB4CD7 /* APIResponseTypes */ = {
+			isa = PBXGroup;
+			children = (
+				84F539BB2B2B35C800CB4CD7 /* RMAllCharactersResponse.swift */,
+			);
+			path = APIResponseTypes;
+			sourceTree = "<group>";
+		};
+		84F539C72B2C762200CB4CD7 /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				84F539C82B2C765C00CB4CD7 /* CharacterDetailViewController.swift */,
+			);
+			path = Other;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -229,16 +286,27 @@
 			buildActionMask = 2147483647;
 			files = (
 				84F22B562B2A0531007E0A8A /* RMEpisode.swift in Sources */,
+				84F539C62B2B5B2A00CB4CD7 /* CharacterCollectionViewCellVM.swift in Sources */,
 				84F22B5D2B2A06E5007E0A8A /* EpisodeViewController.swift in Sources */,
+				84F539CF2B2C84C100CB4CD7 /* FooterLoadingCollectionReusableView.swift in Sources */,
+				84F539CB2B2C779F00CB4CD7 /* CharacterDetailView.swift in Sources */,
+				84F539BE2B2B39E600CB4CD7 /* CharacterListViewVM.swift in Sources */,
 				84F539B62B2A3A0000CB4CD7 /* ApiRequest.swift in Sources */,
+				84F539C92B2C765C00CB4CD7 /* CharacterDetailViewController.swift in Sources */,
 				84F539B82B2A3FD900CB4CD7 /* ApiEndpoint.swift in Sources */,
 				84F22B3B2B29EFB9007E0A8A /* TabBarController.swift in Sources */,
+				84F539C02B2B3A4F00CB4CD7 /* CharacterListView.swift in Sources */,
 				84F22B5F2B2A06F7007E0A8A /* SettingsViewController.swift in Sources */,
+				84F539D12B2CE32600CB4CD7 /* RMImageManager.swift in Sources */,
+				84F539CD2B2C77C000CB4CD7 /* CharacterDetailViewVM.swift in Sources */,
 				84F22B372B29EFB9007E0A8A /* AppDelegate.swift in Sources */,
 				84F22B392B29EFB9007E0A8A /* SceneDelegate.swift in Sources */,
+				84F539BC2B2B35C800CB4CD7 /* RMAllCharactersResponse.swift in Sources */,
 				84F539B42B2A391E00CB4CD7 /* ApiService.swift in Sources */,
+				84F539C42B2B594D00CB4CD7 /* CharacterCollectionViewCell.swift in Sources */,
 				84F22B522B2A0512007E0A8A /* RMLocation.swift in Sources */,
 				84F22B542B2A0524007E0A8A /* RMCharacter.swift in Sources */,
+				84F539C22B2B43B800CB4CD7 /* Extensions.swift in Sources */,
 				84F22B592B2A0650007E0A8A /* CharacterViewController.swift in Sources */,
 				84F22B5B2B2A06C8007E0A8A /* LocationViewController.swift in Sources */,
 			);
