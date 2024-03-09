@@ -64,6 +64,10 @@ final class CharacterListView: UIView {
         collectionView.dataSource = viewModel
         collectionView.delegate = viewModel
     }
+
+    public func onViewTransition() {
+        collectionView.reloadData()
+    }
 }
 
 extension CharacterListView: CharacterListViewVMDelegate {

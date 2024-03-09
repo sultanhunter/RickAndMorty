@@ -10,20 +10,19 @@ final class ApiService {
     enum ApiServiceError: Error {
         case failedToCreateRequest
         case failedToGetData
-        case invalidResponse
+        case failedToParseJson
     }
 
     public func execute<T: Codable>(_ request: ApiRequest, expecting type: T.Type) async throws -> T {
-        guard let urlRequest = self.request(from: request) else { throw ApiServiceError.failedToCreateRequest }
+        guard let urlRequest = await self.request(from: request) else { throw ApiServiceError.failedToCreateRequest }
 
         do {
             let (data, _) = try await URLSession.shared.data(for: urlRequest)
-
             do {
                 let result = try JSONDecoder().decode(type.self, from: data)
                 return result
             } catch {
-                throw ApiServiceError.invalidResponse
+                throw ApiServiceError.failedToParseJson
             }
 
         } catch {
@@ -31,7 +30,24 @@ final class ApiService {
         }
     }
 
-    private func request(from apiRequest: ApiRequest) -> URLRequest? {
+    public func executeForCodable<T: Codable>(_ request: ApiRequest, expecting type: T.Type) async throws -> T {
+        guard let urlRequest = await self.request(from: request) else { throw ApiServiceError.failedToCreateRequest }
+
+        do {
+            let (data, _) = try await URLSession.shared.data(for: urlRequest)
+            do {
+                let result = try JSONDecoder().decode(type.self, from: data)
+                return result
+            } catch {
+                throw ApiServiceError.failedToParseJson
+            }
+
+        } catch {
+            throw ApiServiceError.failedToGetData
+        }
+    }
+
+    private func request(from apiRequest: ApiRequest) async -> URLRequest? {
         guard let url = apiRequest.url else { return nil }
 
         var request = URLRequest(url: url)

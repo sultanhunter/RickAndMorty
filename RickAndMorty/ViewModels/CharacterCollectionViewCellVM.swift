@@ -30,7 +30,7 @@ final class CharacterCollectionViewCellVM: Equatable {
     }
 
     public var characterStatusText: String {
-        return "Status \(characterStatus.text)"
+        return "Status: \(characterStatus.text)"
     }
 
     public func fetchImage() async throws -> Data? {

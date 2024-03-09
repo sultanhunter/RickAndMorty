@@ -23,10 +23,14 @@ final class CharacterViewController: UIViewController, CharacterListViewDelegate
         ])
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        characterListView.onViewTransition()
+    }
+
     func characterSelected(_ characterListView: CharacterListView, selectedCharacter character: RMCharacter) {
         let viewModel = CharacterDetailViewVM(character: character)
         let detailVC = CharacterDetailViewController(viewModel: viewModel)
-        detailVC.navigationItem.largeTitleDisplayMode = .never
         navigationController?.pushViewController(detailVC, animated: true)
     }
 }

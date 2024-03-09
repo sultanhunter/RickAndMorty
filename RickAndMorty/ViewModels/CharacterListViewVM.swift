@@ -99,11 +99,15 @@ extension CharacterListViewVM: UICollectionViewDataSource, UICollectionViewDeleg
         return cell
     }
 
-    /// Sizing cell function
+    // Sizing cell function
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let bounds = UIScreen.main.bounds
-        let width = (bounds.width - 30) / 2
-        return CGSize(width: width, height: width * 1.5)
+        let bounds = collectionView.bounds
+        let collectionViewHeight = bounds.height
+        let cellWidth = (bounds.width - 30) / 2
+
+        let maxCellHeight = cellWidth * 1.5
+        let cellHeight = maxCellHeight >= collectionViewHeight ? collectionViewHeight - 20 : maxCellHeight
+        return CGSize(width: cellWidth, height: cellHeight)
     }
 
     /// Padding function
@@ -125,8 +129,8 @@ extension CharacterListViewVM: UICollectionViewDataSource, UICollectionViewDeleg
 
     /// Setting Footer Loader
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        guard kind == UICollectionView.elementKindSectionFooter else {
-            fatalError("Unsupported")
+        guard kind == UICollectionView.elementKindSectionFooter, shouldShowLoadMoreIndicator else {
+            return UICollectionReusableView()
         }
 
         guard let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: FooterLoadingCollectionReusableView.indentifier, for: indexPath) as? FooterLoadingCollectionReusableView
