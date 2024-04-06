@@ -8,10 +8,12 @@
 import UIKit
 
 final class CharacterDetailViewController: UIViewController {
-    private let viewModel: CharacterDetailViewVM
+    private let detailView: CharacterDetailView
+
     init(viewModel: CharacterDetailViewVM) {
-        self.viewModel = viewModel
+        self.detailView = CharacterDetailView(viewModel: viewModel)
         super.init(nibName: nil, bundle: nil)
+        title = viewModel.title
     }
 
     @available(*, unavailable)
@@ -23,6 +25,29 @@ final class CharacterDetailViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         navigationItem.largeTitleDisplayMode = .never
-        title = viewModel.title
+        view.addSubviews(detailView)
+        addShareButton()
+        addConstraints()
+    }
+
+    private func fetchCharacterInfo() {}
+
+    private func addShareButton() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .action, target: self,
+            action: #selector(onShareTap))
+    }
+
+    @objc
+    private func onShareTap() {}
+
+    private func addConstraints() {
+        NSLayoutConstraint.activate([
+            detailView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            detailView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
+            detailView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            detailView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor)
+
+        ])
     }
 }

@@ -26,6 +26,7 @@ final class ApiService {
             }
 
         } catch {
+            print("APIService Execute Failed", error)
             throw ApiServiceError.failedToGetData
         }
     }
