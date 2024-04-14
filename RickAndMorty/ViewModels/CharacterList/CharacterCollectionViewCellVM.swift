@@ -12,25 +12,33 @@ final class CharacterCollectionViewCellVM: Equatable {
         lhs.characterId == rhs.characterId
     }
 
-    public let characterId: Int
-    public let characterName: String
-    private let characterStatus: RMCharacterStatus
-    private let characterImageUrl: URL?
+    public let character: RMCharacter
+    public var characterId: Int {
+        character.id
+    }
 
-    init(
-        characterId: Int,
-        characterName: String,
-        characterStatus: RMCharacterStatus,
-        characterImageUrl: URL?
-    ) {
-        self.characterId = characterId
-        self.characterName = characterName
-        self.characterStatus = characterStatus
-        self.characterImageUrl = characterImageUrl
+    public var characterName: String {
+        character.name
+    }
+
+    public var characterStatus: RMCharacterStatus {
+        character.status
+    }
+
+    public var characterSpecies: String {
+        character.species
+    }
+
+    private var characterImageUrl: URL? {
+        URL(string: character.image)
+    }
+
+    init(character: RMCharacter) {
+        self.character = character
     }
 
     public var characterStatusText: String {
-        return "Status: \(characterStatus.text)"
+        return "\(characterStatus.text) - \(characterSpecies)"
     }
 
     public func fetchImage() async throws -> Data? {

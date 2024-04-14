@@ -1,14 +1,14 @@
 
 import UIKit
 
-protocol CharacterListViewDelegate: AnyObject {
-    func characterSelected(_ characterListView: CharacterListView, selectedCharacter character: RMCharacter)
+protocol EpisodeListViewDelegate: AnyObject {
+    func episodeSelected(_ episodeListView: EpisodeListView, selectedEpisode episode: RMEpisode)
 }
 
-final class CharacterListView: UIView {
-    public weak var delegate: CharacterListViewDelegate?
+final class EpisodeListView: UIView {
+    public weak var delegate: EpisodeListViewDelegate?
 
-    private let viewModel = CharacterListViewVM()
+    private let viewModel = EpisodeListViewVM()
 
     private let spinner: UIActivityIndicatorView = {
         let spinner = UIActivityIndicatorView(style: .large)
@@ -23,7 +23,7 @@ final class CharacterListView: UIView {
         collectionView.isHidden = true
         collectionView.alpha = 0
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.register(CharacterCollectionViewCell.self, forCellWithReuseIdentifier: CharacterCollectionViewCell.cellIdentifier)
+        collectionView.register(CharacterEpisodeCollectionViewCell.self, forCellWithReuseIdentifier: CharacterEpisodeCollectionViewCell.cellIdentifier)
         collectionView.register(FooterLoadingCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: FooterLoadingCollectionReusableView.indentifier)
         return collectionView
     }()
@@ -37,7 +37,7 @@ final class CharacterListView: UIView {
         viewModel.delegate = self
         setUpCollectionView()
         Task {
-            await viewModel.fetchInitialCharacterList()
+            await viewModel.fetchInitialEpisodesList()
         }
     }
 
@@ -70,8 +70,12 @@ final class CharacterListView: UIView {
     }
 }
 
-extension CharacterListView: CharacterListViewVMDelegate {
-    func didLoadMoreCharacters(with newIndexPaths: [IndexPath]) {
+extension EpisodeListView: EpisodeListViewVMDelegate {
+    func didSelectEpisode(_ episode: RMEpisode) {
+        delegate?.episodeSelected(self, selectedEpisode: episode)
+    }
+
+    func didLoadMoreEpisodes(with newIndexPaths: [IndexPath]) {
         DispatchQueue.main.async { [weak self] in
             self?.collectionView.performBatchUpdates {
                 self?.collectionView.insertItems(at: newIndexPaths)
@@ -88,9 +92,5 @@ extension CharacterListView: CharacterListViewVMDelegate {
                 self?.collectionView.alpha = 1
             })
         }
-    }
-
-    func didSelectCharacter(_ character: RMCharacter) {
-        delegate?.characterSelected(self, selectedCharacter: character)
     }
 }

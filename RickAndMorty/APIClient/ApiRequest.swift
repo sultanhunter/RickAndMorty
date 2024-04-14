@@ -6,7 +6,7 @@ final class ApiRequest {
         static let baseUrl = "https://rickandmortyapi.com/api"
     }
 
-    private let endpoint: ApiEndpoint
+    public let endpoint: ApiEndpoint
     private let pathComponents: [String]
     private let queryParameters: [URLQueryItem]
 
@@ -86,4 +86,5 @@ final class ApiRequest {
 
 extension ApiRequest {
     static let listCharactersRequest = ApiRequest(endpoint: .character)
-}
+    static let listEpisodeRequest = ApiRequest(endpoint: .episode)
+}   

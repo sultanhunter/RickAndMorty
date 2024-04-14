@@ -7,13 +7,16 @@
 
 import UIKit
 
-final class CharacterDetailViewController: UIViewController {
+final class CharacterDetailViewController: UIViewController, CharacterDetailViewDelegate {
     private let detailView: CharacterDetailView
 
-    init(viewModel: CharacterDetailViewVM) {
-        self.detailView = CharacterDetailView(viewModel: viewModel)
+    init(character: RMCharacter) {
+        self.detailView = CharacterDetailView(character: character)
+
         super.init(nibName: nil, bundle: nil)
-        title = viewModel.title
+
+        detailView.delegate = self
+        title = character.name.uppercased()
     }
 
     @available(*, unavailable)
@@ -29,8 +32,6 @@ final class CharacterDetailViewController: UIViewController {
         addShareButton()
         addConstraints()
     }
-
-    private func fetchCharacterInfo() {}
 
     private func addShareButton() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
@@ -49,5 +50,10 @@ final class CharacterDetailViewController: UIViewController {
             detailView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor)
 
         ])
+    }
+
+    func didSelectEpisode(_ episodeURL: URL, episode: String) {
+        let vc = EpisodeDetailViewController(url: episodeURL, episode: episode)
+        navigationController?.pushViewController(vc, animated: true)
     }
 }

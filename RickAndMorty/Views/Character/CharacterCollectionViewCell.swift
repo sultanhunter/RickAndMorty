@@ -10,6 +10,8 @@ import UIKit
 final class CharacterCollectionViewCell: UICollectionViewCell {
     static let cellIdentifier = "CharacterCollectionViewCell"
 
+    private var viewModel: CharacterCollectionViewCellVM?
+
     private let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -35,12 +37,14 @@ final class CharacterCollectionViewCell: UICollectionViewCell {
         return label
     }()
 
+    private let statusIcon = CharacterStatusIcon()
+
     // MARK: - Init
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.backgroundColor = .secondarySystemBackground
-        contentView.addSubviews(imageView, nameLabel, statusLabel)
+        contentView.addSubviews(imageView, nameLabel, statusLabel, statusIcon)
         addConstraints()
         setUpLayer()
     }
@@ -59,16 +63,9 @@ final class CharacterCollectionViewCell: UICollectionViewCell {
 
     private func addConstraints() {
         NSLayoutConstraint.activate([
-            statusLabel.heightAnchor.constraint(equalToConstant: 30),
             nameLabel.heightAnchor.constraint(equalToConstant: 30),
-
-            statusLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 7),
-            statusLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -7),
-
-            nameLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 7),
-            nameLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -7),
-
-            statusLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -3),
+            nameLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 8),
+            nameLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -8),
             nameLabel.bottomAnchor.constraint(equalTo: statusLabel.topAnchor),
 
             imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
@@ -76,12 +73,23 @@ final class CharacterCollectionViewCell: UICollectionViewCell {
             imageView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
             imageView.bottomAnchor.constraint(equalTo: nameLabel.topAnchor, constant: -3),
 
+            statusIcon.heightAnchor.constraint(equalToConstant: 8),
+            statusIcon.widthAnchor.constraint(equalToConstant: 8),
+            statusIcon.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 8),
+            statusIcon.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -14),
+
+            statusLabel.heightAnchor.constraint(equalToConstant: 30),
+            statusLabel.leftAnchor.constraint(equalTo: statusIcon.rightAnchor, constant: 8),
+            statusLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -8),
+            statusLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -3),
+
         ])
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         setUpLayer()
+        setStatusIconColor()
     }
 
     override func prepareForReuse() {
@@ -91,13 +99,27 @@ final class CharacterCollectionViewCell: UICollectionViewCell {
         statusLabel.text = nil
     }
 
+    private func setStatusIconColor() {
+        guard let viewModel = viewModel else { return }
+        DispatchQueue.main.async { [weak self] in
+            if viewModel.characterStatus.rawValue == "Alive" {
+                self?.statusIcon.setColor(UIColor.green.cgColor)
+            } else if viewModel.characterStatus.rawValue == "unknown" {
+                self?.statusIcon.setColor(UIColor.brown.cgColor)
+            } else {
+                self?.statusIcon.setColor(UIColor.red.cgColor)
+            }
+        }
+    }
+
     public func configure(with viewModel: CharacterCollectionViewCellVM) {
+        self.viewModel = viewModel
         nameLabel.text = viewModel.characterName
         statusLabel.text = viewModel.characterStatusText
+        setStatusIconColor()
         Task {
             do {
                 guard let data = try await viewModel.fetchImage() else { return }
-
                 DispatchQueue.main.async { [weak self] in
                     let image = UIImage(data: data)
                     self?.imageView.image = image

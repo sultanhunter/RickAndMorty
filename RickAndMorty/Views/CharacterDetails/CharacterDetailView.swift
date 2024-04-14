@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol CharacterDetailViewDelegate: AnyObject {
+    func didSelectEpisode(_ episodeURL: URL, episode: String)
+}
+
 final class CharacterDetailView: UIView {
+    public weak var delegate: CharacterDetailViewDelegate?
+
     private let viewModel: CharacterDetailViewVM
 
     private var collectionView: UICollectionView?
@@ -19,11 +25,13 @@ final class CharacterDetailView: UIView {
         return spinner
     }()
 
-    init(viewModel: CharacterDetailViewVM) {
-        self.viewModel = viewModel
+    init(character: RMCharacter) {
+        self.viewModel = CharacterDetailViewVM(character: character)
         super.init(frame: .zero)
+        viewModel.delegate = self
+
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = .systemPurple
+
         setupCollectionView()
         addConstraints()
     }
@@ -82,5 +90,11 @@ final class CharacterDetailView: UIView {
         case .episodes:
             return viewModel.createEpisodeSectionLayout()
         }
+    }
+}
+
+extension CharacterDetailView: CharacterDetailViewVMDelegate {
+    func didSelectEpisode(_ episodeURL: URL, episode: String) {
+        delegate?.didSelectEpisode(episodeURL, episode: episode)
     }
 }

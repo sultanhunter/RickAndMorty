@@ -8,8 +8,14 @@
 import Foundation
 import UIKit
 
+protocol CharacterDetailViewVMDelegate: AnyObject {
+    func didSelectEpisode(_ episodeURL: URL, episode: String)
+}
+
 final class CharacterDetailViewVM: NSObject {
     private var character: RMCharacter
+
+    public weak var delegate: CharacterDetailViewVMDelegate?
 
     enum SectionType {
         case photo(viewModel: CharacterPhotoCollectionViewCellVM)
@@ -29,14 +35,14 @@ final class CharacterDetailViewVM: NSObject {
         sections = [
             .photo(viewModel: .init(imageUrl: URL(string: character.image))),
             .information(viewModel: [
-                .init(value: character.status.text, title: "Status"),
-                .init(value: character.gender.rawValue, title: "Gender"),
-                .init(value: character.type, title: "Type"),
-                .init(value: character.species, title: "Species"),
-                .init(value: character.origin.name, title: "Origin"),
-                .init(value: character.location.name, title: "Location"),
-                .init(value: character.created, title: "Created"),
-                .init(value: "\(character.episode.count)", title: "Total Episodes")
+                .init(type: .status, value: character.status.text),
+                .init(type: .gender, value: character.gender.rawValue),
+                .init(type: .type, value: character.type),
+                .init(type: .species, value: character.species),
+                .init(type: .origin, value: character.origin.name),
+                .init(type: .location, value: character.location.name),
+                .init(type: .created, value: character.created),
+                .init(type: .episodeCount, value: "\(character.episode.count)")
 
             ]),
             .episodes(viewModel: character.episode.compactMap {
@@ -101,6 +107,21 @@ extension CharacterDetailViewVM: UICollectionViewDelegate, UICollectionViewDataS
             /// Adding viewModel to the cell
             cell.configure(with: viewModels[indexPath.row])
             return cell
+        }
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let sectionType = sections[indexPath.section]
+
+        switch sectionType {
+        case .photo, .information: break
+
+        case .episodes:
+            let cell = collectionView.cellForItem(at: indexPath) as! CharacterEpisodeCollectionViewCell
+            let episodes = character.episode
+            let selection = episodes[indexPath.row]
+            guard let url = URL(string: selection) else { return }
+            delegate?.didSelectEpisode(url, episode: cell.episode ?? "")
         }
     }
 
