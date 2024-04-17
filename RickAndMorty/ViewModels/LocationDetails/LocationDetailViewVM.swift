@@ -1,47 +1,43 @@
 //
-//  EpisodeDetailViewVM.swift
+//  LocationDetailViewVM.swift
 //  RickAndMorty
 //
-//  Created by Sultan on 07/04/24.
+//  Created by Sultan on 16/04/24.
 //
 
 import UIKit
 
-protocol EpisodeDetailViewVMDelegate: AnyObject {
-    func didFetchEpisodeDetails()
+protocol LocationDetailViewVMDelegate: AnyObject {
+    func didFetchLocationDetails()
     func didSelectCharacter(_ character: RMCharacter)
 }
 
-final class EpisodeDetailViewVM: NSObject {
-    private let endpointUrl: URL?
+final class LocationDetailViewVM: NSObject {
+    private let location: RMLocation
+
+    public weak var delegate: LocationDetailViewVMDelegate?
 
     enum SectionType {
-        case information(viewModels: [EpisodeInfoCollectionViewCellVM])
+        case information(viewModels: [LocationInfoCollectionViewCellVM])
         case characters(viewModels: [CharacterCollectionViewCellVM])
     }
 
     public private(set) var cellViewModels: [SectionType] = []
 
-    public weak var delegate: EpisodeDetailViewVMDelegate?
-
-    private var dataTuple: (episode: RMEpisode, characters: [RMCharacter])? {
+    private var dataTuple: (location: RMLocation, characters: [RMCharacter])? {
         didSet {
             createCellViewModels()
-            delegate?.didFetchEpisodeDetails()
+            delegate?.didFetchLocationDetails()
         }
-    }
-
-    init(endpointUrl: URL?) {
-        self.endpointUrl = endpointUrl
     }
 
     private func createCellViewModels() {
         guard let dataTuple = dataTuple else { return }
-        let episode = dataTuple.episode
+        let location = dataTuple.location
         let characters = dataTuple.characters
 
-        var createdString = {
-            if let date = CharacterInfoCollectionViewCellVM.dateFormatter.date(from: episode.created) {
+        let createdString = {
+            if let date = CharacterInfoCollectionViewCellVM.dateFormatter.date(from: location.created) {
                 return CharacterInfoCollectionViewCellVM.shortDateFormatter.string(from: date)
             } else {
                 return ""
@@ -50,9 +46,9 @@ final class EpisodeDetailViewVM: NSObject {
 
         cellViewModels = [
             .information(viewModels: [
-                .init(title: "Episode Name", value: episode.name),
-                .init(title: "Air Date", value: episode.air_date),
-                .init(title: "Episode", value: episode.episode),
+                .init(title: "Location Name", value: location.name),
+                .init(title: "Type", value: location.type),
+                .init(title: "Dimension", value: location.dimension),
                 .init(title: "Created", value: createdString())
             ]),
             .characters(viewModels: characters.compactMap {
@@ -61,16 +57,16 @@ final class EpisodeDetailViewVM: NSObject {
         ]
     }
 
-    public func fetchEpisodeData() async {
-        guard let url = endpointUrl, let request = ApiRequest(url: url) else { return }
+    public func fetchLocationData() async {
+        guard let url = URL(string: location.url), let request = ApiRequest(url: url) else { return }
         do {
-            let episode = try await ApiService.shared.execute(request, expecting: RMEpisode.self)
-            await fetchRelatedCharacters(episode: episode)
+            let location = try await ApiService.shared.execute(request, expecting: RMLocation.self)
+            await fetchRelatedCharacters(location: location)
         } catch {}
     }
 
-    private func fetchRelatedCharacters(episode: RMEpisode) async {
-        let characterUrls: [URL] = episode.characters.compactMap {
+    private func fetchRelatedCharacters(location: RMLocation) async {
+        let characterUrls: [URL] = location.residents.compactMap {
             URL(string: $0)
         }
 
@@ -78,7 +74,7 @@ final class EpisodeDetailViewVM: NSObject {
             ApiRequest(url: $0)
         }
 
-        let characterCollection = EpisodeCharactersActor()
+        let characterCollection = LocationCharactersActor()
 
         let group = DispatchGroup()
         for request in requests {
@@ -94,13 +90,17 @@ final class EpisodeDetailViewVM: NSObject {
 
         group.notify(queue: .main, execute: {
             Task { [weak self] in
-                self?.dataTuple = (episode: episode, characters: await characterCollection.getCharacters())
+                self?.dataTuple = (location: location, characters: await characterCollection.getCharacters())
             }
         })
     }
+
+    init(location: RMLocation) {
+        self.location = location
+    }
 }
 
-actor EpisodeCharactersActor {
+actor LocationCharactersActor {
     private var characters: [RMCharacter] = []
 
     func addCharacter(_ character: RMCharacter) {
@@ -112,7 +112,7 @@ actor EpisodeCharactersActor {
     }
 }
 
-extension EpisodeDetailViewVM: UICollectionViewDelegate, UICollectionViewDataSource {
+extension LocationDetailViewVM: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let sectionType = cellViewModels[section]
 
@@ -135,7 +135,7 @@ extension EpisodeDetailViewVM: UICollectionViewDelegate, UICollectionViewDataSou
         case .information(let viewModels):
             let viewModel = viewModels[indexPath.row]
 
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EpisodeInfoCollectionViewCell.cellIdentifier, for: indexPath) as? EpisodeInfoCollectionViewCell
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LocationInfoCollectionViewCell.cellIdentifier, for: indexPath) as? LocationInfoCollectionViewCell
             else { fatalError() }
 
             cell.configure(with: viewModel)

@@ -1,14 +1,14 @@
 
 import UIKit
 
-protocol EpisodeListViewDelegate: AnyObject {
-    func episodeSelected(_ episodeListView: EpisodeListView, selectedEpisode episode: RMEpisode)
+protocol CharacterListViewDelegate: AnyObject {
+    func characterSelected(_ characterListView: CharacterListView, selectedCharacter character: RMCharacter)
 }
 
-final class EpisodeListView: UIView {
-    public weak var delegate: EpisodeListViewDelegate?
+final class CharacterListView: UIView {
+    public weak var delegate: CharacterListViewDelegate?
 
-    private let viewModel = EpisodeListViewVM()
+    private let viewModel: CharacterListViewVM
 
     private let spinner: UIActivityIndicatorView = {
         let spinner = UIActivityIndicatorView(style: .large)
@@ -23,13 +23,14 @@ final class EpisodeListView: UIView {
         collectionView.isHidden = true
         collectionView.alpha = 0
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.register(CharacterEpisodeCollectionViewCell.self, forCellWithReuseIdentifier: CharacterEpisodeCollectionViewCell.cellIdentifier)
+        collectionView.register(CharacterCollectionViewCell.self, forCellWithReuseIdentifier: CharacterCollectionViewCell.cellIdentifier)
         collectionView.register(FooterLoadingCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: FooterLoadingCollectionReusableView.indentifier)
         return collectionView
     }()
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init() {
+        self.viewModel = CharacterListViewVM()
+        super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
         addSubviews(collectionView, spinner)
         addConstraints()
@@ -37,7 +38,7 @@ final class EpisodeListView: UIView {
         viewModel.delegate = self
         setUpCollectionView()
         Task {
-            await viewModel.fetchInitialEpisodesList()
+            await viewModel.fetchInitialCharacterList()
         }
     }
 
@@ -70,12 +71,8 @@ final class EpisodeListView: UIView {
     }
 }
 
-extension EpisodeListView: EpisodeListViewVMDelegate {
-    func didSelectEpisode(_ episode: RMEpisode) {
-        delegate?.episodeSelected(self, selectedEpisode: episode)
-    }
-
-    func didLoadMoreEpisodes(with newIndexPaths: [IndexPath]) {
+extension CharacterListView: CharacterListViewVMDelegate {
+    func didLoadMoreCharacters(with newIndexPaths: [IndexPath]) {
         DispatchQueue.main.async { [weak self] in
             self?.collectionView.performBatchUpdates {
                 self?.collectionView.insertItems(at: newIndexPaths)
@@ -92,5 +89,9 @@ extension EpisodeListView: EpisodeListViewVMDelegate {
                 self?.collectionView.alpha = 1
             })
         }
+    }
+
+    func didSelectCharacter(_ character: RMCharacter) {
+        delegate?.characterSelected(self, selectedCharacter: character)
     }
 }

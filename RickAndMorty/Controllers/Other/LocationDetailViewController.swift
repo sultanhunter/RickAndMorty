@@ -1,19 +1,19 @@
 //
-//  EpisodeDetailViewController.swift
+//  LocationDetailViewController.swift
 //  RickAndMorty
 //
-//  Created by Sultan on 07/04/24.
+//  Created by Sultan on 16/04/24.
 //
 
 import UIKit
 
-final class EpisodeDetailViewController: UIViewController {
-    private let detailView: EpisodeDetailView
-    init(url: URL, episode: String) {
-        self.detailView = EpisodeDetailView(endpointUrl: url)
+class LocationDetailViewController: UIViewController {
+    private let detailView: LocationDetailView
+
+    init(location: RMLocation) {
+        self.detailView = LocationDetailView(location: location)
         super.init(nibName: nil, bundle: nil)
-        title = episode
-        detailView.delegate = self
+        title = location.name
     }
 
     @available(*, unavailable)
@@ -23,8 +23,9 @@ final class EpisodeDetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.addSubview(detailView)
         view.backgroundColor = .systemBackground
+        view.addSubview(detailView)
+        detailView.delegate = self
         addConstraints()
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(didTapShare))
     }
@@ -43,7 +44,7 @@ final class EpisodeDetailViewController: UIViewController {
     private func didTapShare() {}
 }
 
-extension EpisodeDetailViewController: EpisodeDetailViewDelegate {
+extension LocationDetailViewController: LocationDetailViewDelegate {
     func didSelectCharacter(_ character: RMCharacter) {
         let vc = CharacterDetailViewController(character: character)
         navigationController?.pushViewController(vc, animated: true)
